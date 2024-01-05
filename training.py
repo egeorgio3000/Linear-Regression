@@ -31,17 +31,20 @@ def J(theta):
     return (1 / (2 * n)) * sum
 
 def plot_data(a, theta):
-    plt.figure(1)
-    plt.plot(data["km"], data["price"], 'ro', markersize=4)
-    plt.title("Car price vs kilometers")
+    fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+    # plt.figure(1)
+    axs[0].plot(data["km"], data["price"], 'ro', markersize=4)
+    axs[0].set_title("Car price vs kilometers")
 
-    plt.figure(2)
-    plt.plot(data.km_transform, data.price_transform, 'ro', markersize=4)
-    plt.plot([0, 1], [theta[0], theta[0] + theta[1]], linestyle='--')
-    plt.title("Normalized datas and linear regression")
+    # plt.figure(2)
+    axs[1].plot(data.km_transform, data.price_transform, 'ro', markersize=4)
+    axs[1].plot([0, 1], [theta[0], theta[0] + theta[1]], linestyle='--')
+    axs[1].set_title("Normalized datas and linear regression")
 
-    plt.figure(3)
-    plt.plot(J_epoch_arr(a, 50)[0], J_epoch_arr(a, 50)[1], '-')
+    # plt.figure(3)
+    axs[2].plot(J_epoch_arr(a, 50)[0], J_epoch_arr(a, 50)[1], '-')
+    axs[2].set_title("Cost evolution")
+    plt.tight_layout()
     plt.show()
 
 def print_data(a, theta):
@@ -72,8 +75,10 @@ def find_best_learning_rate():
 if __name__ == '__main__':
     data["km_transform"] = data["km"].apply(lambda x: normalize(x, data["km"].min(), data["km"].max()))
     data["price_transform"] = data["price"].apply(lambda x: normalize(x, data["price"].min(), data["price"].max()))
-    print(data)
     a = find_best_learning_rate()
     theta = linear_regression(a, 50)
+    with open('theta.csv', "w") as file:
+        file.write(f"{theta[1]},{theta[0]}")
     print_data(a, theta)
     plot_data(a, theta)
+
