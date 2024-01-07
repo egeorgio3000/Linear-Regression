@@ -78,7 +78,7 @@ if __name__ == '__main__':
     a = find_best_learning_rate()
     theta = linear_regression(a, 50)
     with open('theta.csv', "w") as file:
-        file.write(f"{theta[1]},{theta[0]}")
+        file.write(f"{theta[0]},{theta[1]}")
     print_data(a, theta)
     plot_data(a, theta)
 

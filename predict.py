@@ -9,9 +9,10 @@ def denormalize(x, x_min, x_max):
 
 data = pd.read_csv("data.csv")
 
-def calculate_predicted_price(mileage):
+def calculate_predicted_price(mileage, theta):
     normalized_mileage = normalize(mileage, data["km"].min(), data["km"].max())
     normalized_predicted_price = theta[0] + theta[1] * normalized_mileage
+    print(normalized_mileage, normalized_predicted_price)
     predicted_price = denormalize(normalized_predicted_price, data["price"].min(), data["price"].max())
     return predicted_price
 
@@ -33,7 +34,7 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"{e}: please regenerate csv file")
         exit(1)
-    predicted_price = calculate_predicted_price(float(mileage))
+    predicted_price = calculate_predicted_price(float(mileage), theta)
     print(f"\nThe predicted price for your mileage is {predicted_price} euros")
     
     
